@@ -1,0 +1,184 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact – Génie Restaurant</title>
+  <link rel="stylesheet" href="{% static 'style.css' %}"/>
+  <link rel="stylesheet" href="{% static 'contact.css' %}"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+<nav class="navbar" id="navbar">
+  <a href="{% url 'home' %}" class="nav-logo">
+    <img src="{% static 'images/logo.png' %}" alt="Logo"/>
+    <div class="nav-logo-text"><span class="brand-name">Génie</span><span class="brand-sub">Restaurant</span></div>
+  </a>
+  <div class="nav-links" id="navLinks">
+    <a href="{% url 'home' %}">HOME</a>
+    <a href="{% url 'menu' %}">MENU</a>
+    <a href="{% url 'about' %}">ABOUT</a>
+    <a href="{% url 'contact' %}" class="active">CONTACT</a>
+    <a href="{% url 'login' %}" class="nav-login-btn"><i class="fa fa-user"></i> LOGIN</a>
+  </div>
+  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+</nav>
+
+<div class="page-content">
+
+  <div class="contact-hero">
+    <span class="section-badge">Parlons-nous</span>
+    <h1 class="section-title">Contactez<br/><span>Notre Équipe</span></h1>
+    <p>Une question, une réservation, un partenariat ? Nous sommes là pour vous répondre rapidement.</p>
+  </div>
+
+  <section class="contact-section">
+    <div class="contact-grid">
+
+      <!-- Info panneau -->
+      <div class="contact-info">
+        <h3>Nos Coordonnées</h3>
+        <p class="info-intro">Notre équipe est disponible 7j/7 pour vous accueillir et répondre à toutes vos demandes.</p>
+
+        <div class="info-item">
+          <div class="info-icon"><i class="fa fa-map-marker-alt"></i></div>
+          <div>
+            <strong>Adresse</strong>
+            <p>Plateau, Avenue Chardy, Abidjan<br/>Côte d'Ivoire</p>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-icon"><i class="fa fa-phone-alt"></i></div>
+          <div>
+            <strong>Téléphone</strong>
+            <p><a href="tel:+22500000001">+225 00 00 00 01</a> (Réservations)</p>
+            <p><a href="tel:+22500000002">+225 00 00 00 02</a> (Administration)</p>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-icon"><i class="fa fa-envelope"></i></div>
+          <div>
+            <strong>E-mail</strong>
+            <p><a href="mailto:info@genie-restaurant.com">info@genie-restaurant.com</a></p>
+            <p><a href="mailto:admin@genie-restaurant.com">admin@genie-restaurant.com</a></p>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-icon"><i class="fa fa-clock"></i></div>
+          <div>
+            <strong>Horaires d'ouverture</strong>
+            <p>Lundi – Vendredi : 11h00 – 23h00</p>
+            <p>Samedi – Dimanche : 10h00 – 00h00</p>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-icon"><i class="fa fa-user-shield"></i></div>
+          <div>
+            <strong>Équipe interne</strong>
+            <p>Admins / Serveurs :<br/><a href="mailto:staff@genie-restaurant.com">staff@genie-restaurant.com</a></p>
+          </div>
+        </div>
+
+        <div class="contact-social">
+          <p>Suivez-nous :</p>
+          <div class="social-links">
+            <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Formulaire de contact -->
+      <div class="contact-form-wrap">
+        <h3>Envoyer un message</h3>
+        <form id="contactForm" onsubmit="sendMessage(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="cNom">Nom complet</label>
+              <input type="text" id="cNom" placeholder="Jean Dupont" required/>
+            </div>
+            <div class="form-group">
+              <label for="cEmail">Adresse e-mail</label>
+              <input type="email" id="cEmail" placeholder="votre@email.com" required/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="cTel">Téléphone (optionnel)</label>
+            <input type="tel" id="cTel" placeholder="+225 00 00 00 00"/>
+          </div>
+          <div class="form-group">
+            <label for="cSujet">Sujet</label>
+            <select id="cSujet" required>
+              <option value="" disabled selected>Choisir un sujet...</option>
+              <option value="reservation">Réservation de table</option>
+              <option value="commande">Question sur une commande</option>
+              <option value="recrutement">Recrutement / Rejoindre l'équipe</option>
+              <option value="partenariat">Partenariat commercial</option>
+              <option value="autre">Autre demande</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="cMsg">Votre message</label>
+            <textarea id="cMsg" rows="5" placeholder="Écrivez votre message ici..." required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">
+            <i class="fa fa-paper-plane"></i> Envoyer le message
+          </button>
+        </form>
+      </div>
+
+    </div>
+
+    <!-- Map placeholder -->
+    <div class="map-section">
+      <h3>Nous trouver</h3>
+      <div class="map-placeholder">
+        <i class="fa fa-map-marked-alt"></i>
+        <p>Plateau, Avenue Chardy – Abidjan, Côte d'Ivoire</p>
+        <a href="https://maps.google.com" target="_blank" class="btn btn-outline btn-sm">
+          <i class="fab fa-google"></i> Ouvrir dans Google Maps
+        </a>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer class="site-footer">
+  <div class="footer-bottom" style="border-top:none;">
+    <p>&copy; 2025 <span>Génie Restaurant</span>. Tous droits réservés.</p>
+    <div class="social-links">
+      <a href="#"><i class="fab fa-facebook-f"></i></a>
+      <a href="#"><i class="fab fa-instagram"></i></a>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 30);
+  });
+  document.getElementById('hamburger').addEventListener('click', () => {
+    document.getElementById('navLinks').classList.toggle('open');
+  });
+
+  function sendMessage(e) {
+    e.preventDefault();
+    const t = document.getElementById('toast');
+    t.textContent = '✅ Message envoyé ! Nous vous répondrons dans les 24h.';
+    t.className = 'toast show success';
+    setTimeout(() => t.className = 'toast', 4000);
+    e.target.reset();
+  }
+</script>
+</body>
+</html>

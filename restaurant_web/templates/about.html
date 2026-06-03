@@ -1,0 +1,135 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>À propos – Génie Restaurant</title>
+  <link rel="stylesheet" href="{% static 'style.css' %}"/>
+  <link rel="stylesheet" href="{% static 'about.css' %}"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+<nav class="navbar" id="navbar">
+  <a href="{% url 'home' %}" class="nav-logo">
+    <img src="{% static 'images/logo.png' %}" alt="Logo"/>
+    <div class="nav-logo-text"><span class="brand-name">Génie</span><span class="brand-sub">Restaurant</span></div>
+  </a>
+  <div class="nav-links" id="navLinks">
+    <a href="{% url 'home' %}">HOME</a>
+    <a href="{% url 'menu' %}">MENU</a>
+    <a href="{% url 'about' %}" class="active">ABOUT</a>
+    <a href="{% url 'contact' %}">CONTACT</a>
+    <a href="{% url 'login' %}" class="nav-login-btn"><i class="fa fa-user"></i> LOGIN</a>
+  </div>
+  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+</nav>
+
+<div class="page-content">
+
+  <!-- Hero about -->
+  <section class="about-hero">
+    <div class="about-hero-content">
+      <span class="section-badge">Notre Histoire</span>
+      <h1 class="section-title">À propos du<br/><span>Génie Restaurant</span></h1>
+      <p>Depuis 2010, nous réunissons les saveurs du monde dans une ambiance chaleureuse et raffinée, au cœur d'Abidjan.</p>
+    </div>
+  </section>
+
+  <!-- Notre histoire -->
+  <section class="about-story">
+    <div class="story-grid">
+      <div class="story-img-wrap">
+        <img src="{% static 'images/hero_food.png' %}" alt="Notre restaurant"/>
+        <div class="story-badge-float">
+          <span class="big">15</span>
+          <span class="small">Ans d'excellence</span>
+        </div>
+      </div>
+      <div class="story-text">
+        <span class="section-badge">Qui sommes-nous</span>
+        <h2 class="section-title" style="text-align:left;">Une passion transmise<br/><span>de génération en génération</span></h2>
+        <p>Le <strong style="color:var(--gold)">Génie Restaurant</strong> est né d'une passion profonde pour la cuisine authentique et le partage. Fondé en 2010 par le Chef Emmanuel Kouassi et sa famille, notre établissement s'est imposé comme une référence gastronomique incontournable à Abidjan.</p>
+        <p style="margin-top:16px;">Notre philosophie est simple : <em style="color:var(--gold-light)">chaque plat raconte une histoire</em>. Nous puisons notre inspiration dans les riches traditions culinaires africaines, méditerranéennes et asiatiques pour créer des expériences gustatives inoubliables.</p>
+        <p style="margin-top:16px;">Nos chefs, formés dans les meilleures écoles culinaires du monde, travaillent chaque jour avec des produits locaux frais pour vous offrir le meilleur de la gastronomie.</p>
+        <div class="story-values">
+          <div class="val"><i class="fa fa-check-circle"></i> Ingrédients 100% frais</div>
+          <div class="val"><i class="fa fa-check-circle"></i> Recettes authentiques</div>
+          <div class="val"><i class="fa fa-check-circle"></i> Service chaleureux</div>
+          <div class="val"><i class="fa fa-check-circle"></i> Ambiance raffinée</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Chiffres clés -->
+  <section class="about-stats">
+    <div class="stats-grid">
+      <div class="stat-block"><div class="stat-ico"><i class="fa fa-users"></i></div><div class="stat-num">5 000+</div><div class="stat-lbl">Clients fidèles</div></div>
+      <div class="stat-block"><div class="stat-ico"><i class="fa fa-utensils"></i></div><div class="stat-num">200+</div><div class="stat-lbl">Plats au menu</div></div>
+      <div class="stat-block"><div class="stat-ico"><i class="fa fa-medal"></i></div><div class="stat-num">12</div><div class="stat-lbl">Récompenses</div></div>
+      <div class="stat-block"><div class="stat-ico"><i class="fa fa-clock"></i></div><div class="stat-num">15</div><div class="stat-lbl">Années d'expérience</div></div>
+    </div>
+  </section>
+
+  <!-- Équipe -->
+  <section class="about-team">
+    <div class="section-header">
+      <span class="section-badge">Notre Équipe</span>
+      <h2 class="section-title">Les <span>Artisans</span> du Goût</h2>
+    </div>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-avatar"><img src="{% static 'images/dish1.png' %}" alt="Chef Emmanuel"/></div>
+        <h4>Emmanuel Kouassi</h4>
+        <span class="team-role">Chef Exécutif & Fondateur</span>
+        <p>Formé à Paris et Tokyo, il crée des plats qui marient saveurs africaines et techniques mondiales.</p>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar"><img src="{% static 'images/dish2.png' %}" alt="Chef Marie"/></div>
+        <h4>Marie-Claire Bamba</h4>
+        <span class="team-role">Chef Pâtissière</span>
+        <p>Artiste du sucré, elle transforme chaque dessert en une œuvre d'art comestible.</p>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar"><img src="{% static 'images/dish3.png' %}" alt="Manager"/></div>
+        <h4>Kofi Asante</h4>
+        <span class="team-role">Directeur de Salle</span>
+        <p>Garant d'un accueil irréprochable, il veille à ce que chaque visite soit mémorable.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="about-cta">
+    <h2>Prêt à vivre l'expérience <span>Génie</span> ?</h2>
+    <p>Réservez votre table dès maintenant et laissez-vous surprendre.</p>
+    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+      <a href="{% url 'menu' %}" class="btn btn-primary"><i class="fa fa-utensils"></i> Voir le Menu</a>
+      <a href="{% url 'contact' %}" class="btn btn-outline"><i class="fa fa-phone"></i> Nous Contacter</a>
+    </div>
+  </section>
+
+</div>
+
+<footer class="site-footer">
+  <div class="footer-bottom" style="border-top:none;">
+    <p>&copy; 2025 <span>Génie Restaurant</span>. Tous droits réservés.</p>
+    <div class="social-links">
+      <a href="#"><i class="fab fa-facebook-f"></i></a>
+      <a href="#"><i class="fab fa-instagram"></i></a>
+      <a href="#"><i class="fab fa-twitter"></i></a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 30);
+  });
+  document.getElementById('hamburger').addEventListener('click', () => {
+    document.getElementById('navLinks').classList.toggle('open');
+  });
+</script>
+</body>
+</html>

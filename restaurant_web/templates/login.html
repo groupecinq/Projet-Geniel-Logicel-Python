@@ -1,0 +1,199 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Connexion / Inscription – Génie Restaurant</title>
+  <link rel="stylesheet" href="{% static 'style.css' %}" />
+  <link rel="stylesheet" href="{% static 'login.css' %}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+
+<body>
+  <nav class="navbar" id="navbar">
+    <a href="{% url 'home' %}" class="nav-logo">
+      <img src="{% static 'images/logo.png' %}" alt="Logo" />
+      <div class="nav-logo-text"><span class="brand-name">Génie</span><span class="brand-sub">Restaurant</span></div>
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="{% url 'home' %}">HOME</a>
+      <a href="{% url 'menu' %}">MENU</a>
+      <a href="{% url 'about' %}">ABOUT</a>
+      <a href="{% url 'contact' %}">CONTACT</a>
+      <a href="{% url 'login' %}" class="nav-login-btn active"><i class="fa fa-user"></i> LOGIN</a>
+    </div>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  </nav>
+
+  <div class="auth-page">
+    <div class="auth-left">
+      <div class="auth-brand">
+        <img src="{% static 'images/logo.png' %}" alt="Logo" />
+        <h1>Génie<br /><span>Restaurant</span></h1>
+        <p>Connectez-vous pour commander vos plats préférés et gérer vos réservations.</p>
+      </div>
+      <img src="{% static 'images/hero_food.png' %}" alt="Plats" class="auth-food-img" />
+    </div>
+
+    <div class="auth-right">
+      <!-- Onglets -->
+      <div class="auth-tabs">
+        <button class="tab-btn active" id="tabLogin" onclick="showTab('login')">Se connecter</button>
+        <button class="tab-btn" id="tabRegister" onclick="showTab('register')">S'inscrire</button>
+      </div>
+
+      <!-- FORMULAIRE LOGIN -->
+      <form id="loginForm" class="auth-form" method="POST" action="{% url 'login' %}" autocomplete="off">
+        {% csrf_token %}
+        {% if error %}<p style="color:red;text-align:center;">{{ error }}</p>{% endif %}
+        <h2>Bon retour ! <span>👋</span></h2>
+        <p class="form-hint">Entrez vos identifiants pour accéder à votre compte.</p>
+
+        <div class="form-group">
+          <label for="loginEmail">Adresse e-mail</label>
+          <input type="text" id="loginEmail" name="username" autocomplete="new-password" value=""
+            placeholder="Nom d'utilisateur ou Email" required />
+        </div>
+        <div class="form-group">
+          <label for="loginPassword">Mot de passe</label>
+          <div class="pass-wrap">
+            <input type="password" id="loginPassword" name="password" autocomplete="new-password" value=""
+              placeholder="••••••••" required />
+            <button type="button" class="pass-toggle" onclick="togglePass('loginPassword',this)"><i
+                class="fa fa-eye"></i></button>
+          </div>
+        </div>
+
+        <!-- Rôle -->
+        <div class="role-select">
+          <span class="role-label">Se connecter en tant que :</span>
+          <div class="role-options">
+            <label class="role-opt">
+              <input type="radio" name="loginRole" value="client" checked />
+              <span class="role-box"><i class="fa fa-user"></i> Client</span>
+            </label>
+            <label class="role-opt">
+              <input type="radio" name="loginRole" value="admin" />
+              <span class="role-box"><i class="fa fa-shield-alt"></i> Administrateur</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-options">
+          <label class="remember"><input type="checkbox" id="remember" /> Se souvenir de moi</label>
+          <a href="#" class="forgot">Mot de passe oublié ?</a>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">
+          <i class="fa fa-sign-in-alt"></i> Se connecter
+        </button>
+      </form>
+
+      <!-- FORMULAIRE INSCRIPTION -->
+      <form id="registerForm" class="auth-form hidden" onsubmit="handleRegister(event)" autocomplete="off">
+        <h2>Créer un compte <span>🍽</span></h2>
+        <p class="form-hint">Rejoignez-nous pour une expérience culinaire unique.</p>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="regPrenom">Prénom</label>
+            <input type="text" id="regPrenom" placeholder="Jean" required />
+          </div>
+          <div class="form-group">
+            <label for="regNom">Nom</label>
+            <input type="text" id="regNom" placeholder="Dupont" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="regEmail">Adresse e-mail</label>
+          <input type="email" id="regEmail" placeholder="votre@email.com" autocomplete="new-password" value="" required />
+        </div>
+        <div class="form-group">
+          <label for="regPhone">Téléphone</label>
+          <input type="tel" id="regPhone" placeholder="+237 000 00 00 00" />
+        </div>
+        <div class="form-group">
+          <label for="regPass">Mot de passe</label>
+          <div class="pass-wrap">
+            <input type="password" id="regPass" placeholder="••••••••" autocomplete="new-password" value="" required />
+            <button type="button" class="pass-toggle" onclick="togglePass('regPass',this)"><i
+                class="fa fa-eye"></i></button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="regPassConf">Confirmer le mot de passe</label>
+          <input type="password" id="regPassConf" placeholder="••••••••" required />
+        </div>
+
+        <div class="role-select">
+          <span class="role-label">Je m'inscris en tant que :</span>
+          <div class="role-options">
+            <label class="role-opt">
+              <input type="radio" name="regRole" value="client" checked />
+              <span class="role-box"><i class="fa fa-user"></i> Client</span>
+            </label>
+          </div>
+        </div>
+
+        <label class="terms">
+          <input type="checkbox" required /> J'accepte les <a href="#">conditions d'utilisation</a>
+        </label>
+
+        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:16px;">
+          <i class="fa fa-user-plus"></i> Créer mon compte
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    window.addEventListener('scroll', () => {
+      document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 30);
+    });
+    document.getElementById('hamburger').addEventListener('click', () => {
+      document.getElementById('navLinks').classList.toggle('open');
+    });
+
+    function showTab(tab) {
+      document.getElementById('loginForm').classList.toggle('hidden', tab !== 'login');
+      document.getElementById('registerForm').classList.toggle('hidden', tab !== 'register');
+      document.getElementById('tabLogin').classList.toggle('active', tab === 'login');
+      document.getElementById('tabRegister').classList.toggle('active', tab === 'register');
+    }
+
+    function togglePass(id, btn) {
+      const inp = document.getElementById(id);
+      inp.type = inp.type === 'password' ? 'text' : 'password';
+      btn.querySelector('i').className = inp.type === 'password' ? 'fa fa-eye' : 'fa fa-eye-slash';
+    }
+
+    function handleLogin(e) {
+      // Formulaire géré par Django
+    }
+
+    function handleRegister(e) {
+      e.preventDefault();
+      const p1 = document.getElementById('regPass').value;
+      const p2 = document.getElementById('regPassConf').value;
+      if (p1 !== p2) { showToast('❌ Les mots de passe ne correspondent pas !', 'error'); return; }
+      showToast('✅ Compte créé avec succès ! Bienvenue !', 'success');
+      setTimeout(() => window.location.href = "{% url 'menu' %}", 1500);
+    }
+
+    function showToast(msg, type = 'success') {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = 'toast show ' + type;
+      setTimeout(() => t.className = 'toast', 3500);
+    }
+
+    // Onglet register si hash
+    if (window.location.hash === '#register') showTab('register');
+  </script>
+</body>
+
+</html>

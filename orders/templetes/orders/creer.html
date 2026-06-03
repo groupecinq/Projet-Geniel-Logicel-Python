@@ -1,0 +1,128 @@
+{# orders/templates/orders/creer.html #}
+{% extends 'orders/base.html' %}
+
+{% block title %}Nouvelle Commande{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow">
+            <div class="card-header" style="background:#1A1A2E;">
+                <h4 class="text-white mb-0">
+                    <i class="bi bi-plus-circle"></i> Nouvelle Commande
+                </h4>
+            </div>
+            <div class="card-body">
+
+                {# IMPORTANT: method='post' pour envoyer les données au serveur #}
+                {# {% csrf_token %} protège contre les attaques CSRF #}
+                <form method='post'>
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Client</label>
+                        {{ form.client }}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Type de commande</label>
+                        {{ form.type_commande }}
+                    </div>
+
+                    {# ── SÉLECTION DES PLATS ── #}
+                    <h5 class="mt-4">Plats commandés</h5>
+                    <div id="plats-container">
+                        <div class="row g-2 mb-2 plat-ligne">
+                            <div class="col-8">
+                                <select class="form-select plat-select" name="plat[]">
+                                    <option value="">-- Choisir un plat --</option>
+                                    {% for plat in plats %}
+                                    <option value="{{ plat.id }}"
+                                            data-prix="{{ plat.prix }}">
+                                        {{ plat.nom }} — {{ plat.prix }} FCFA
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-3">
+                                <input type="number" name="quantite[]"
+                                       class="form-control" value="1" min="1">
+                            </div>
+                            <div class="col-1">
+                                <button type="button" class="btn btn-danger btn-sm
+                                        supprimer-ligne">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" id="ajouter-plat" class="btn btn-outline-success btn-sm">
+                        <i class="bi bi-plus"></i> Ajouter un plat
+                    </button>
+
+                    <div class="mt-3 p-3 bg-light rounded">
+                        <strong>Total estimé : </strong>
+                        <span id="total-commande">0 FCFA</span>
+                    </div>
+
+                    <div class="mb-3 mt-3">
+                        <label class="form-label">Notes / Instructions</label>
+                        {{ form.notes }}
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-warning btn-lg">
+                            <i class="bi bi-check-circle"></i> Valider la Commande
+                        </button>
+                        <a href="{% url 'liste_commandes' %}" class="btn btn-secondary">
+                            Annuler
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{# JavaScript pour ajouter des lignes de plats dynamiquement #}
+<script>
+// Ajouter une nouvelle ligne de plat
+document.getElementById('ajouter-plat').addEventListener('click', function() {
+    const container = document.getElementById('plats-container');
+    const firstLigne = container.querySelector('.plat-ligne');
+    const newLigne = firstLigne.cloneNode(true);  // copie la première ligne
+    newLigne.querySelector('select').value = '';   // remet à zéro
+    newLigne.querySelector('input').value = '1';
+    container.appendChild(newLigne);
+    calculerTotal();
+});
+
+// Supprimer une ligne
+document.addEventListener('click', function(e) {
+    if (e.target.closest('.supprimer-ligne')) {
+        const lignes = document.querySelectorAll('.plat-ligne');
+        if (lignes.length > 1) {  // garde au moins une ligne
+            e.target.closest('.plat-ligne').remove();
+            calculerTotal();
+        }
+    }
+});
+
+// Calculer le total en temps réel
+function calculerTotal() {
+    let total = 0;
+    document.querySelectorAll('.plat-ligne').forEach(function(ligne) {
+        const select = ligne.querySelector('select');
+        const qte = parseInt(ligne.querySelector('input').value) || 0;
+        const prix = parseFloat(select.selectedOptions[0]?.dataset.prix) || 0;
+        total += prix * qte;
+    });
+    document.getElementById('total-commande').textContent = total + ' FCFA';
+}
+
+document.addEventListener('change', calculerTotal);
+document.addEventListener('input', calculerTotal);
+</script>
+{% endblock %}

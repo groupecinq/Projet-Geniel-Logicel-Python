@@ -1,0 +1,513 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Menu – SAVORA Restaurant</title>
+  <link rel="stylesheet" href="{% static 'style.css' %}" />
+  <link rel="stylesheet" href="{% static 'menu.css' %}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+
+<body>
+  <nav class="navbar" id="navbar">
+    <a href="{% url 'home' %}" class="nav-logo">
+      <img src="{% static 'images/logo.png' %}" alt="Logo" />
+      <div class="nav-logo-text"><span class="brand-name">SAVORA</span><span class="brand-sub">Restaurant</span></div>
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="{% url 'home' %}">HOME</a>
+      <a href="{% url 'menu' %}" class="active">MENU</a>
+      <a href="{% url 'about' %}">ABOUT</a>
+      <a href="{% url 'contact' %}">CONTACT</a>
+      <a href="{% url 'login' %}" class="nav-login-btn"><i class="fa fa-user"></i> LOGIN</a>
+    </div>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  </nav>
+
+  <div class="page-content">
+    <div class="menu-hero">
+      <h1>Notre <span>Menu Complet</span></h1>
+      <p>Plats soigneusement sélectionnés pour ravir vos papilles</p>
+    </div>
+
+    <!-- Panier flottant -->
+    <div class="cart-float" id="cartFloat">
+      <i class="fa fa-shopping-cart"></i>
+      <span class="cart-badge" id="cartCount">0</span>
+    </div>
+
+    <!-- Filtres -->
+    <div class="menu-filters">
+      <button class="filter-btn active" data-cat="all">Tous</button>
+      <button class="filter-btn" data-cat="Plats principaux">Plats principaux</button>
+      <button class="filter-btn" data-cat="Grillardes">Grillardes</button>
+      <button class="filter-btn" data-cat="Plats Traditionnel">Plats Traditionnel</button>
+      <button class="filter-btn" data-cat="Accompagnements">Accompagnements</button>
+      <button class="filter-btn" data-cat="Plats rapide">Plats rapide</button>
+      <button class="filter-btn" data-cat="desserts">Desserts</button>
+    </div>
+
+    <!-- Grille des Plats -->
+    <div class="menu-grid" id="menuGrid">
+
+      <div class="menu-card" data-cat="Plats principaux">
+        <div class="menu-img"><img src="{% static 'images/ndole.png' %}" alt="Ndole" /><span class="menu-badge">⭐
+            Populaire</span></div>
+        <div class="menu-body">
+          <h3>Ndole </h3>
+          <p>Avec viandes, poissons et crevettes</p>
+          <div class="menu-footer"><span class="price"> 3 000 FCFA</span><button
+              class="btn btn-primary btn-sm add-to-cart" data-name="Ndole" data-price="3000"><i class="fa fa-plus"></i>
+              Ajouter</button></div>
+        </div>
+      </div>
+
+      <div class="menu-card" data-cat="Plats principaux">
+        <div class="menu-img"><img src="{% static 'images/eru.png' %}" alt="Eru" /><span
+            class="menu-badge new">Nouveau</span></div>
+        <div class="menu-body">
+          <h3>Eru </h3>
+          <p>Avec viandes, peau, poissons et crevettes</p>
+          <div class="menu-footer"><span class="price">4 000 FCFA</span><button
+              class="btn btn-primary btn-sm add-to-cart" data-name="Eru" data-price="4000"><i class="fa fa-plus"></i>
+              Ajouter</button></div>
+        </div>
+      </div>
+
+      <div class="menu-card" data-cat="Plats principaux">
+        <div class="menu-img"><img src="{% static 'images/taro.png' %}" alt="Taro" /><span class="menu-badge">Chef's
+            Choice</span></div>
+        <div class="menu-body">
+          <h3>Taro</h3>
+          <p>Avec viandes, peau et poissons</p>
+          <div class="menu-footer"><span class="price">5 000 FCFA</span><button
+              class="btn btn-primary btn-sm add-to-cart" data-name="taro" data-price="5000"><i class="fa fa-plus"></i>
+              Ajouter</button></div>
+        </div>
+      </div>
+
+      <div class="menu-card" data-cat="Grillardes">
+        <div class="menu-img"><img src="{% static 'images/dish1.png' %}" alt="dish1" /><span class="
+            menu-badge">Grillardes</span></div>
+        <div class="menu-body">
+          <h3>Poisson braise</h3>
+          <p>Poisson frais</p>
+          <div class="menu-footer"><span class="price">4 500 FCFA</span><button
+              class="btn btn-primary btn-sm add-to-cart" data-name="Poisson braise" data-price="4500"><i
+                class="fa fa-plus"></i> Ajouter</button></div>
+        </div>
+      </div>
+
+      <div class="menu-card" data-cat="Grillardes">
+        <div class="menu-img"><img src="{% static 'images/dish2.png' %}" alt="Côtes d'Agneau" /></div>
+        <div class="menu-body">
+          <h3>Côtes d'Agneau Rôties</h3>
+          <p>Agneau à la menthe, pommes de terre sarladaises</p>
+          <div class="menu-footer"><span class="price">6 000 FCFA</span><button
+              class="btn btn-primary btn-sm add-to-cart" data-name="Côtes Agneau" data-price="6000"><i
+                class="fa fa-plus"></i> Ajouter</button></div>
+        </div>
+      </div>
+
+      <div class="menu-card" data-cat="Grillardes">
+        <div class="menu-img"><img src="{% static 'images/dish3.png' %}" alt="Saumon" /></div>
+        <div class="menu-body">
+          <h3>Saumon Grillé Citron-Aneth</h3>
+          <p>Saumon frais, beurre citronné, riz basmati</p>
+          <div class="menu-footer"><span class="price">8 000 FCFA</span><button
+              class="btn btn-primary btn-sm add-to-cart" data-name="Saumon Grillé" data-price="8000"><i
+                class="fa fa-plus"></i> Ajouter</button></div>
+        </div>
+      </div>
+
+      <div class="menu-card" data-cat="Plats Traditionnel">
+        <div class="menu-img"><img src="{% static 'images/koki.png' %}" alt="Koki" /></div>
+        <div class="menu-body">
+          <h3>Koki</h3>
+          <p>haricots blancs, Huile de palme, piment</p>
+          <div class="menu-footer"><span class="price">2 000 FCFA</span><button
+              class="btn btn-primary btn-sm add-to-cart" data-name="Koki" data-price="2000"><i class="fa fa-plus"></i>
+              Ajouter</button></div>
+        </div>
+      </div>
+
+      <div class="menu-card" data-cat="Plats Traditionnel">
+        <div class="menu-img"><img src="{% static 'images/ekwang.png' %}" alt="Ekwang" /><span
+            class="menu-badge "></span></div>
+        <div class="menu-body">
+          <h3>Ekwang</h3>
+          <p>Légumes de saison, épices douces, poissons</p>
+          <div class="menu-footer"><span class="price">2 500 FCFA</span><button
+              class="btn btn-primary btn-sm add-to-cart" data-name="Ekwang" data-price="2500"><i class="fa fa-plus"></i>
+              Ajouter</button></div>
+        </div>
+      </div>
+
+      <div class="menu-card" data-cat="Plats Traditionnel">
+        <div class="menu-img"><img src="{% static 'images/mintumba.png' %}" alt="Mintumba" /></div>
+        <div class="menu-body">
+          <h3>Mintumba</h3>
+          <p>manioc, huile de palme</p>
+          <div class="menu-footer"><span class="price">2 500 FCFA</span><button
+              class="btn btn-primary btn-sm add-to-cart" data-name="Mintumba" data-price="2500"><i
+                class="fa fa-plus"></i> Ajouter</button></div>
+        </div>
+      </div>
+
+      <div class="menu-card" data-cat="Plats Traditionnel">
+        <div class="menu-img"><img src="{% static 'images/pomme pile.png' %}" alt="Pomme pile" /></div>
+        <div class="menu-body">
+          <h3>Pomme pile</h3>
+          <p>pommes de terre, haricot noire, huile de palme</p>
+          <div class="menu-footer"><span class="price">2 000 FCFA</span><button
+              class="btn btn-primary btn-sm add-to-cart" data-name="Pomme pile" data-price="2000"><i
+                class="fa fa-plus"></i> Ajouter</button></div>
+        </div>
+      </div>
+
+      <div class="menu-card" data-cat="Plats Traditionnel">
+        <div class="menu-img"><img src="{% static 'images/kati kati.png' %}" alt="Kati kati" /></div>
+        <div class="menu-body">
+          <h3>Kati kati</h3>
+          <p>Viande de Boeuf, couscous de tapioca/p>
+          <div class="menu-footer"><span class="price">3 000 FCFA</span><button
+              class="btn btn-primary btn-sm add-to-cart" data-name="Kati kati" data-price="3000"><i
+                class="fa fa-plus"></i> Ajouter</button></div>
+        </div>
+      </div>
+
+      <div class="menu-card" data-cat="Plats Traditionnel">
+        <div class="menu-img"><img src="{% static 'images/mets de pistache.png' %}" alt="Mets de pistache" /><span
+            class="menu-badge "></span></div>
+        <div class="menu-body">
+          <h3>Mets de pistache</h3>
+          <p>poudre de pistache, viande de bœuf, poisson fumé, écrevisses, épices, huile</p>
+          <div class="menu-footer"><span class="price">4 500 FCFA</span><button
+              class="btn btn-primary btn-sm add-to-cart" data-name="Mets de pistache" data-price="4500"><i
+                class="fa fa-plus"></i> Ajouter</button></div>
+        </div>
+      </div>
+
+      <div class="menu-card" data-cat="Plats Traditionnel">
+        <div class="menu-img"><img src="{% static 'images/kwacoco bible.png' %}" alt="Kwacoco bible" /></div>
+        <div class="menu-body">
+          <h3>Kwacoco bible</h3>
+          <p>purée de macabo, poisson fumé, huile de palme</p>
+          <div class="menu-footer"><span class="price">5 000 FCFA</span><button
+              class="btn btn-primary btn-sm add-to-cart" data-name="Kwacoco bible" data-price="5000"><i
+                class="fa fa-plus"></i> Ajouter</button></div>
+        </div>
+      </div>
+
+      <div class="menu-card" data-cat="Plats Traditionnel">
+        <div class="menu-img"><img src="{% static 'images/mbongo tchobi.png' %}" alt="Mbongo tchobi" /></div>
+        <div class="menu-body">
+          <h3>Mbongo tchobi</h3>
+          <p>écorces brulées de bongo,djansan,pepe, quatre-cotés</p>
+          <div class="menu-footer"><span class="price">5 000 FCFA</span><button
+              class="btn btn-primary btn-sm add-to-cart" data-name="Mbongo tchobi" data-price="5000"><i
+                class="fa fa-plus"></i> Ajouter</button></div>
+        </div>
+      </div>
+
+      <div class="menu-card" data-cat="Plats Traditionnel">
+        <div class="menu-img"><img src="{% static 'images/riz jollof.png' %}" alt="Risotto" /><span
+            class="menu-badge veg">Végétarien</span>
+        </div>
+        <div class="menu-body">
+          <h3>Risotto aux Champignons</h3>
+          <p>Riz arborio, champignons sauvages, parmesan, truffe</p>
+          <div class="menu-footer"><span class="price">5 500 FCFA</span><button
+              class="btn btn-primary btn-sm add-to-cart" data-name="Risotto Champignons" data-price="5500"><i
+                class="fa fa-plus"></i> Ajouter</button></div>
+        </div>
+      </div>
+
+      <div class="menu-card" data-cat="Plats Traditionnel">
+        <div class="menu-img"><img src="{% static 'images/sanga.png' %}" alt="Sanga" /><span
+            class="menu-badge veg">Végétarien</span>
+        </div>
+        <div class="menu-body">
+          <h3>Sanga</h3>
+          <p>mais frais, jus de noix de palme, légumes verts(Zom),sucre</p>
+          <div class="menu-footer"><span class="price">4 500 FCFA</span><button
+              class="btn btn-primary btn-sm add-to-cart" data-name="Sanga" data-price="4500"><i class="fa fa-plus"></i>
+              Ajouter</button></div>
+        </div>
+      </div>
+
+      <div class="menu-card" data-cat="Accompagnements">
+        <div class="menu-img"><img src="{% static 'images/riz.png' %}" alt="Riz" /></div>
+        <div class="menu-body">
+          <h3>Riz</h3>
+          <p>Riz bouilli</p>
+          <div class="menu-footer"><span class="price">1 500 FCFA</span><button
+              class="btn btn-primary btn-sm add-to-cart" data-name="Riz" data-price="1500"><i class="fa fa-plus"></i>
+              Ajouter</button></div>
+        </div>
+      </div>
+
+      <div class="menu-card" data-cat="Desserts">
+        <div class="menu-img"><img src="{% static 'images/dish2.png' %}" alt="Tarte Tatin" /></div>
+        <div class="menu-body">
+          <h3>Tarte Tatin aux Pommes</h3>
+          <p>Pommes caramélisées, pâte feuilletée, crème fraîche</p>
+          <div class="menu-footer"><span class="price">4 500 FCFA</span><button
+              class="btn btn-primary btn-sm add-to-cart" data-name="Tarte Tatin" data-price="4500"><i
+                class="fa fa-plus"></i> Ajouter</button></div>
+        </div>
+      </div>
+
+      <div class="menu-card" data-cat="Grillardes">
+        <div class="menu-img"><img src="{% static 'images/dish2.png' %}" alt="Porc Effiloché" /></div>
+        <div class="menu-body">
+          <h3>Porc Effiloché BBQ</h3>
+          <p>Porc confit 12h, sauce BBQ maison, coleslaw, brioche</p>
+          <div class="menu-footer"><span class="price">9 500 FCFA</span><button
+              class="btn btn-primary btn-sm add-to-cart" data-name="Porc Effiloché" data-price="9500"><i
+                class="fa fa-plus"></i> Ajouter</button></div>
+        </div>
+      </div>
+
+      <div class="menu-card" data-cat="Desserts">
+        <div class="menu-img"><img src="{% static 'images/cupcakes.png' %}" alt="Cupcakes" /></div>
+        <div class="menu-body">
+          <h3>Cupcakes</h3>
+          <p>Recette classique française, vanille de Madagascar</p>
+          <div class="menu-footer"><span class="price">2 000 FCFA</span><button
+              class="btn btn-primary btn-sm add-to-cart" data-name="Cupcakes" data-price="2000"><i
+                class="fa fa-plus"></i> Ajouter</button></div>
+        </div>
+      </div>
+
+      <div class="menu-card" data-cat="Desserts">
+        <div class="menu-img"><img src="{% static 'images/gateau chocolat.png' %}" alt="Gateau chocolat" /></div>
+        <div class="menu-body">
+          <h3>Gateau chocolat</h3>
+          <p>Fondant au chocolat</p>
+          <div class="menu-footer"><span class="price">9 000 FCFA</span><button
+              class="btn btn-primary btn-sm add-to-cart" data-name="Gateau chocolat" data-price="9000"><i
+                class="fa fa-plus"></i> Ajouter</button></div>
+        </div>
+      </div>
+
+      <div class="menu-card" data-cat="Desserts">
+        <div class="menu-img"><img src="{% static 'images/crepes.png' %}" alt="Crepes" /></div>
+        <div class="menu-body">
+          <h3>Crepes</h3>
+          <p>Au chocolat, banane, ...</p>
+          <div class="menu-footer"><span class="price">3 000 FCFA</span><button
+              class="btn btn-primary btn-sm add-to-cart" data-name="Crepes" data-price="3000"><i class="fa fa-plus"></i>
+              Ajouter</button></div>
+        </div>
+      </div>
+
+      <div class="menu-card" data-cat="Desserts">
+        <div class="menu-img"><img src="{% static 'images/beignets souffle.png' %}" alt="Beignets souffle" /></div>
+        <div class="menu-body">
+          <h3>Beignets souffle</h3>
+          <p>Beignets patisser</p>
+          <div class="menu-footer"><span class="price">3 000 FCFA</span><button
+              class="btn btn-primary btn-sm add-to-cart" data-name="Beignets souffle" data-price="3000"><i
+                class="fa fa-plus"></i> Ajouter</button></div>
+        </div>
+      </div>
+
+    </div><!-- end menu-grid -->
+  </div><!-- end page-content -->
+
+  <!-- Modal panier -->
+  <div class="cart-modal" id="cartModal">
+    <div class="cart-panel">
+      <div class="cart-header">
+        <h3><i class="fa fa-shopping-cart"></i> Mon Panier</h3>
+        <button id="closeCart"><i class="fa fa-times"></i></button>
+      </div>
+      <div class="cart-items" id="cartItems">
+        <p class="empty-cart">Votre panier est vide.</p>
+      </div>
+      <div class="cart-total">
+        <span>Total :</span>
+        <span id="cartTotal" class="total-price">0 FCFA</span>
+      </div>
+
+      {% if user.is_authenticated %}
+      <button onclick="payerCommande()" class="btn btn-primary"
+        style="width:100%;justify-content:center;margin-top:16px;">
+        <i class="fa fa-credit-card"></i> Payer la commande
+      </button>
+      {% else %}
+      <a href="{% url 'login' %}" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:16px;">
+        <i class="fa fa-lock"></i> Se connecter pour payer
+      </a>
+      {% endif %}
+
+    </div>
+  </div>
+
+
+  <!-- Modal Paiement MTN / Orange -->
+  <div class="cart-modal" id="paymentModal">
+    <div class="cart-panel" style="max-width: 400px; margin: auto;">
+      <div class="cart-header">
+        <h3><i class="fa fa-mobile-alt"></i> Paiement Mobile</h3>
+        <button id="closePayment"><i class="fa fa-times"></i></button>
+      </div>
+      <div style="padding: 20px;">
+        <p style="margin-bottom: 15px; color: #ccc;">Veuillez entrer vos coordonnées MTN Mobile Money ou Orange Money
+          pour valider le paiement de <strong id="payAmount"></strong>.</p>
+        <div class="form-group" style="margin-bottom: 15px;">
+          <label>Réseau</label>
+          <select id="payNetwork"
+            style="width: 100%; padding: 10px; border-radius: 5px; background: #333; color: white; border: 1px solid #555;">
+            <option value="mtn">MTN Mobile Money</option>
+            <option value="orange">Orange Money</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-bottom: 15px;">
+          <label>Numéro de téléphone</label>
+          <input type="tel" id="payPhone" placeholder="Ex: 6 70 00 00 00"
+            style="width: 100%; padding: 10px; border-radius: 5px; background: #333; color: white; border: 1px solid #555;"
+            required />
+        </div>
+        <div class="form-group" style="margin-bottom: 20px;">
+          <label>Code Secret (PIN)</label>
+          <input type="password" id="payPin" placeholder="••••"
+            style="width: 100%; padding: 10px; border-radius: 5px; background: #333; color: white; border: 1px solid #555;"
+            required />
+        </div>
+        <button onclick="confirmPayment()" class="btn btn-primary" style="width: 100%; justify-content: center;">
+          Valider le paiement
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-bottom" style="border-top:none;">
+      <p>&copy; 2025 <span>Génie Restaurant</span>. Tous droits réservés.</p>
+      <div class="social-links">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // Navbar scroll
+    window.addEventListener('scroll', () => {
+      document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 30);
+    });
+    document.getElementById('hamburger').addEventListener('click', () => {
+      document.getElementById('navLinks').classList.toggle('open');
+    });
+
+    // Filtres
+    let cart = [];
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const cat = btn.dataset.cat;
+        document.querySelectorAll('.menu-card').forEach(card => {
+          card.style.display = (cat === 'all' || card.dataset.cat === cat) ? 'flex' : 'none';
+        });
+      });
+    });
+
+    // Panier
+    document.querySelectorAll('.add-to-cart').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const name = btn.dataset.name;
+        const price = parseInt(btn.dataset.price);
+        const existing = cart.find(i => i.name === name);
+        if (existing) existing.qty++;
+        else cart.push({ name, price, qty: 1 });
+        updateCart();
+        showToast('✅ ' + name + ' ajouté au panier !');
+      });
+    });
+
+    function updateCart() {
+      document.getElementById('cartCount').textContent = cart.reduce((s, i) => s + i.qty, 0);
+      const itemsDiv = document.getElementById('cartItems');
+      if (cart.length === 0) { itemsDiv.innerHTML = '<p class="empty-cart">Votre panier est vide.</p>'; }
+      else {
+        itemsDiv.innerHTML = cart.map((item, idx) =>
+          `<div class="cart-item">
+          <span>${item.name} x${item.qty}</span>
+          <span>${(item.price * item.qty).toLocaleString()} FCFA</span>
+          <button onclick="removeItem(${idx})"><i class="fa fa-trash"></i></button>
+        </div>`
+        ).join('');
+      }
+      const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+      document.getElementById('cartTotal').textContent = total.toLocaleString() + ' FCFA';
+    }
+
+    function removeItem(idx) { cart.splice(idx, 1); updateCart(); }
+
+    document.getElementById('cartFloat').addEventListener('click', () => {
+      document.getElementById('cartModal').classList.add('open');
+    });
+    document.getElementById('closeCart').addEventListener('click', () => {
+      document.getElementById('cartModal').classList.remove('open');
+    });
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+
+    function payerCommande() {
+      const isAuthenticated = "{{ user.is_authenticated }}" === "True";
+      if (!isAuthenticated) {
+        window.location.href = "{% url 'login' %}";
+        return;
+      }
+
+      if (cart.length === 0) {
+        showToast('❌ Votre panier est vide.', 'error');
+        return;
+      }
+      // Open Payment Modal
+      document.getElementById('cartModal').classList.remove('open');
+      document.getElementById('paymentModal').classList.add('open');
+      const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+      document.getElementById('payAmount').textContent = total.toLocaleString() + ' FCFA';
+    }
+
+    document.getElementById('closePayment').addEventListener('click', () => {
+      document.getElementById('paymentModal').classList.remove('open');
+    });
+
+    function confirmPayment() {
+      const phone = document.getElementById('payPhone').value;
+      const pin = document.getElementById('payPin').value;
+      if (!phone || !pin) {
+        showToast('❌ Veuillez remplir tous les champs.', 'error');
+        return;
+      }
+
+      showToast('✅ Paiement mobile réussi ! Commande validée.', 'success');
+      cart = [];
+      updateCart();
+      document.getElementById('payPhone').value = '';
+      document.getElementById('payPin').value = '';
+      setTimeout(() => {
+        document.getElementById('paymentModal').classList.remove('open');
+      }, 1500);
+    }
+
+  </script>
+</body>
+
+</html>

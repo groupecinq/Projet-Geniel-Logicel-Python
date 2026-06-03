@@ -1,0 +1,231 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SAVORA Restaurant – Délicieux Plats</title>
+  <meta name="description"
+    content="Bienvenue a SAVORA Restaurant. Découvrez nos plats savoureux préparés avec passion." />
+  <link rel="stylesheet" href="{% static 'style.css' %}" />
+  <link rel="stylesheet" href="{% static 'index.css' %}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar" id="navbar">
+    <a href="{% url 'home' %}" class="nav-logo">
+      <img src="{% static 'images/logo.png' %}" alt="Logo Génie Restaurant" />
+      <div class="nav-logo-text">
+        <span class="brand-name">SAVORA</span>
+        <span class="brand-sub">Restaurant</span>
+      </div>
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="{% url 'home' %}" class="active" id="nav-home">HOME</a>
+      <a href="{% url 'menu' %}" id="nav-menu">MENU</a>
+      <a href="{% url 'about' %}" id="nav-about">ABOUT</a>
+      <a href="{% url 'contact' %}" id="nav-contact">CONTACT</a>
+      <a href="{% url 'login' %}" class="nav-login-btn" id="nav-login"><i class="fa fa-user"></i> LOGIN</a>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Menu mobile">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <section class="hero" id="hero">
+    <div class="hero-bg-circles">
+      <div class="circle c1"></div>
+      <div class="circle c2"></div>
+      <div class="circle c3"></div>
+    </div>
+    <div class="hero-dots"></div>
+    <div class="hero-container">
+      <div class="hero-image-wrap">
+        <div class="hero-ring"></div>
+        <img src="{% static 'images/hero_food.png' %}" alt="Nos plats délicieux et savoureux" class="hero-food-img" />
+      </div>
+      <div class="hero-content">
+        <span class="hero-badge"><i class="fa fa-star"></i> Cuisine Premium</span>
+        <h1 class="hero-title">DÉLICIEUX<br /><span>FOOD MENU</span></h1>
+        <p class="hero-desc">Vivez une expérience culinaire unique. Nos plats sont préparés avec des ingrédients frais
+          et une passion qui se goûte à chaque bouchée.</p>
+        <div class="hero-actions">
+          <a href="{% url 'menu' %}" class="btn btn-primary"><i class="fa fa-utensils"></i> Commander Maintenant</a>
+          <a href="{% url 'about' %}" class="btn btn-outline">En savoir plus</a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat"><span class="stat-num">200+</span><span class="stat-lbl">Plats</span></div>
+          <div class="stat-divider"></div>
+          <div class="stat"><span class="stat-num">5K+</span><span class="stat-lbl">Clients</span></div>
+          <div class="stat-divider"></div>
+          <div class="stat"><span class="stat-num">15</span><span class="stat-lbl">Ans d'exp.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FEATURED DISHES ===== -->
+  <section class="featured" id="featured">
+    <div class="section-header">
+      <span class="section-badge">⭐ Nos Spécialités</span>
+      <h2 class="section-title">Plats <span>Vedettes</span></h2>
+      <p class="section-subtitle">Découvrez nos 4 créations les plus appréciées par nos clients.</p>
+    </div>
+    <div class="featured-grid">
+      <div class="feat-card">
+        <div class="feat-img-wrap">
+          <img src="{% static 'images/dish1.png' %}" alt="Poulet Grillé aux Herbes" />
+          <span class="feat-badge">Populaire</span>
+        </div>
+        <div class="feat-info">
+          <h3>Poulet Grillé aux Herbes</h3>
+          <p>Poulet mariné au citron, herbes fraîches, servi avec légumes rôtis.</p>
+          <div class="feat-footer">
+            <span class="feat-price">12,500 FCFA</span>
+            <a href="{% url 'menu' %}" class="btn btn-primary btn-sm">Commander</a>
+          </div>
+        </div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-img-wrap">
+          <img src="{% static 'images/dish2.png' %}" alt="Steak Boeuf Sauce Champignon" />
+          <span class="feat-badge new">Nouveau</span>
+        </div>
+        <div class="feat-info">
+          <h3>Steak Boeuf Sauce Champignon</h3>
+          <p>Boeuf tendre cuit à la perfection, sauce crémeuse aux champignons.</p>
+          <div class="feat-footer">
+            <span class="feat-price">18,000 FCFA</span>
+            <a href="{% url 'menu' %}" class="btn btn-primary btn-sm">Commander</a>
+          </div>
+        </div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-img-wrap">
+          <img src="{% static 'images/dish3.png' %}" alt="Pâtes aux Crevettes" />
+          <span class="feat-badge">Chef's Choice</span>
+        </div>
+        <div class="feat-info">
+          <h3>Pâtes aux Crevettes Crémeuses</h3>
+          <p>Linguines fraîches, crevettes royales, sauce crème basilic et parmesan.</p>
+          <div class="feat-footer">
+            <span class="feat-price">14,500 FCFA</span>
+            <a href="{% url 'menu' %}" class="btn btn-primary btn-sm">Commander</a>
+          </div>
+        </div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-img-wrap">
+          <img src="{% static 'images/dish1.png' %}" alt="Bowl Végétarien" />
+          <span class="feat-badge veg">Végétarien</span>
+        </div>
+        <div class="feat-info">
+          <h3>Bowl Végétarien Gourmand</h3>
+          <p>Riz complet, tofu grillé, edamame, légumes colorés et sauce tahini.</p>
+          <div class="feat-footer">
+            <span class="feat-price">9,500 FCFA</span>
+            <a href="{% url 'menu' %}" class="btn btn-primary btn-sm">Commander</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:48px;">
+      <a href="{% url 'menu' %}" class="btn btn-outline"><i class="fa fa-list"></i> Voir tous les 20 plats</a>
+    </div>
+  </section>
+
+  <!-- ===== WHY US ===== -->
+  <section class="why-us" id="why-us">
+    <div class="section-header">
+      <span class="section-badge">Pourquoi nous choisir</span>
+      <h2 class="section-title">Notre <span>Engagement</span></h2>
+    </div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-icon"><i class="fa fa-leaf"></i></div>
+        <h4>Ingrédients Frais</h4>
+        <p>Nous sélectionnons chaque jour les meilleurs produits locaux et bio pour vos plats.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon"><i class="fa fa-clock"></i></div>
+        <h4>Service Rapide</h4>
+        <p>Vos commandes préparées et servies en moins de 30 minutes, toujours chauds.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon"><i class="fa fa-medal"></i></div>
+        <h4>Qualité Premium</h4>
+        <p>Nos chefs expérimentés mettent leur passion dans chaque plat qu'ils créent.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon"><i class="fa fa-heart"></i></div>
+        <h4>Fait avec Amour</h4>
+        <p>Chaque recette est une histoire, racontée avec des saveurs authentiques et généreuses.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="brand-name">🍽 SAVORA Restaurant</div>
+        <p>Une expérience gastronomique unique où chaque plat est une œuvre d'art culinaire. Venez savourer
+          l'excellence.</p>
+        <div class="social-links" style="margin-top:20px;">
+          <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+          <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="{% url 'home' %}">Home</a></li>
+          <li><a href="{% url 'menu' %}">Menu</a></li>
+          <li><a href="{% url 'about' %}">About</a></li>
+          <li><a href="{% url 'contact' %}">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Compte</h4>
+        <ul>
+          <li><a href="{% url 'login' %}">Se connecter</a></li>
+          <li><a href="{% url 'login' %}#register">S'inscrire</a></li>
+          <li><a href="#">Mon compte</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="tel:+22500000000"><i class="fa fa-phone"></i> +237 00 00 00 00</a></li>
+          <li><a href="mailto:info@genie-restaurant.com"><i class="fa fa-envelope"></i> info@genie-resto.com</a></li>
+          <li><a href="#"><i class="fa fa-map-marker-alt"></i> Yaounde, Cameroun</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 <span>SAVORA Restaurant</span>. Tous droits réservés.</p>
+      <p>Fait avec <span>♥</span> par l'équipe Génie</p>
+    </div>
+  </footer>
+
+  <script>
+    // Navbar scroll
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 30);
+    });
+    // Hamburger
+    document.getElementById('hamburger').addEventListener('click', () => {
+      document.getElementById('navLinks').classList.toggle('open');
+    });
+  </script>
+</body>
+
+</html>

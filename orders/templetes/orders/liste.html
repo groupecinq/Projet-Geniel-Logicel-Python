@@ -1,0 +1,83 @@
+{# orders/templates/orders/liste.html #}
+{% extends 'orders/base.html' %}  {# hérite de base.html #}
+
+{% block title %}Liste des Commandes{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-list-check text-warning"></i> Commandes</h2>
+    <a href="{% url 'creer_commande' %}" class="btn btn-warning">
+        <i class="bi bi-plus-circle"></i> Nouvelle commande
+    </a>
+</div>
+
+{# Filtres par statut #}
+<div class="btn-group mb-3">
+    <a href="?" class="btn btn-outline-secondary btn-sm">Toutes</a>
+    <a href="?statut=en_attente" class="btn btn-outline-warning btn-sm">En attente</a>
+    <a href="?statut=en_preparation" class="btn btn-outline-info btn-sm">En prépa</a>
+    <a href="?statut=pret" class="btn btn-outline-success btn-sm">Prêtes</a>
+</div>
+
+{# Tableau des commandes #}
+<div class="card shadow-sm">
+    <div class="card-body p-0">
+        <table class="table table-hover table-striped mb-0">
+            <thead class="table-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Client</th>
+                    <th>Type</th>
+                    <th>Statut</th>
+                    <th>Montant</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {# Boucle sur chaque commande #}
+                {% for commande in commandes %}
+                <tr>
+                    <td><strong>#{{ commande.id }}</strong></td>
+                    <td>{{ commande.client.nom }}</td>
+                    <td>
+                        {% if commande.type_commande == 'sur_place' %}
+                            <span class="badge bg-primary">Sur place</span>
+                        {% else %}
+                            <span class="badge bg-info">Livraison</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {# Couleur selon le statut #}
+                        {% if commande.statut == 'en_attente' %}
+                            <span class="badge bg-warning text-dark">En attente</span>
+                        {% elif commande.statut == 'en_preparation' %}
+                            <span class="badge bg-info">En préparation</span>
+                        {% elif commande.statut == 'pret' %}
+                            <span class="badge bg-success">Prêt</span>
+                        {% elif commande.statut == 'livre' %}
+                            <span class="badge bg-secondary">Livré</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ commande.montant_total }} FCFA</td>
+                    <td>{{ commande.date_creation|date:'d/m/Y H:i' }}</td>
+                    <td>
+                        <a href="{% url 'detail_commande' commande.id %}"
+                           class="btn btn-sm btn-outline-primary">
+                            <i class="bi bi-eye"></i> Voir
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                {# Affiché si aucune commande #}
+                <tr>
+                    <td colspan="7" class="text-center text-muted py-4">
+                        Aucune commande pour le moment.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
