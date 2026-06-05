@@ -1,0 +1,236 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard Administrateur - SAVORA</title>
+  <link rel="stylesheet" href="{% static 'style.css' %}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    body {
+      background-color: #1a1a1a;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+    }
+    .dashboard-container {
+      display: flex;
+      min-height: 100vh;
+    }
+    .sidebar {
+      width: 250px;
+      background: #111;
+      padding: 20px 0;
+      border-right: 1px solid #333;
+    }
+    .sidebar-header {
+      text-align: center;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #333;
+      margin-bottom: 20px;
+    }
+    .sidebar-header h2 {
+      color: #f39c12;
+      margin: 0;
+      font-size: 1.5em;
+    }
+    .sidebar-menu a {
+      display: block;
+      padding: 15px 20px;
+      color: #bbb;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+    .sidebar-menu a:hover, .sidebar-menu a.active {
+      background: #333;
+      color: #f39c12;
+      border-left: 4px solid #f39c12;
+    }
+    .sidebar-menu i {
+      margin-right: 10px;
+      width: 20px;
+      text-align: center;
+    }
+    .main-content {
+      flex: 1;
+      padding: 30px;
+      overflow-y: auto;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 40px;
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 2em;
+    }
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+    .kpi-card {
+      background: #222;
+      padding: 25px;
+      border-radius: 10px;
+      border: 1px solid #333;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s;
+    }
+    .kpi-card:hover {
+      transform: translateY(-5px);
+      border-color: #f39c12;
+    }
+    .kpi-card h3 {
+      margin: 0 0 10px 0;
+      color: #aaa;
+      font-size: 1em;
+      text-transform: uppercase;
+    }
+    .kpi-card .value {
+      font-size: 2.2em;
+      font-weight: bold;
+      color: #fff;
+    }
+    .kpi-icon {
+      position: absolute;
+      right: 20px;
+      bottom: -10px;
+      font-size: 4em;
+      color: rgba(243, 156, 18, 0.1);
+    }
+    
+    .section-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 20px;
+    }
+    .panel {
+      background: #222;
+      padding: 25px;
+      border-radius: 10px;
+      border: 1px solid #333;
+    }
+    .panel h2 {
+      margin-top: 0;
+      color: #f39c12;
+      border-bottom: 1px solid #333;
+      padding-bottom: 15px;
+    }
+    .top-plats-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .top-plats-list li {
+      display: flex;
+      justify-content: space-between;
+      padding: 15px 0;
+      border-bottom: 1px solid #333;
+    }
+    .top-plats-list li:last-child {
+      border-bottom: none;
+    }
+    .badge-critical {
+      background: #e74c3c;
+      color: white;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 0.8em;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<div class="dashboard-container">
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h2>SAVORA ADMIN</h2>
+    </div>
+    <div class="sidebar-menu">
+      <a href="#" class="active"><i class="fa fa-chart-line"></i> Vue d'ensemble</a>
+      <a href="{% url 'liste_commandes' %}"><i class="fa fa-utensils"></i> Commandes / Cuisine</a>
+      <a href="/admin/hr/"><i class="fa fa-users"></i> Ressources Humaines</a>
+      <a href="/admin/inventory/"><i class="fa fa-boxes"></i> Inventaire</a>
+      <a href="/admin/"><i class="fa fa-cogs"></i> Paramètres Avancés</a>
+      <a href="{% url 'home' %}"><i class="fa fa-arrow-left"></i> Retour au site</a>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <div class="header">
+      <h1>Tableau de bord <span style="color: #f39c12; font-size: 0.5em; vertical-align: middle;">Mois: {{ mois }} / {{ annee }}</span></h1>
+      <div class="user-info">
+        <span>Connecté en tant que <strong>{{ user.username }}</strong></span>
+        <a href="{% url 'logout' %}" class="btn btn-primary" style="padding: 8px 15px; font-size: 0.9em;"><i class="fa fa-sign-out-alt"></i></a>
+      </div>
+    </div>
+
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <h3>Chiffre d'Affaires</h3>
+        <div class="value">{{ ca|floatformat:0 }} FCFA</div>
+        <i class="fa fa-wallet kpi-icon"></i>
+      </div>
+      <div class="kpi-card">
+        <h3>Commandes</h3>
+        <div class="value">{{ nb_commandes }}</div>
+        <i class="fa fa-shopping-bag kpi-icon"></i>
+      </div>
+      <div class="kpi-card" {% if stocks_critiques > 0 %}style="border-color: #e74c3c;"{% endif %}>
+        <h3>Stocks Critiques</h3>
+        <div class="value" {% if stocks_critiques > 0 %}style="color: #e74c3c;"{% endif %}>{{ stocks_critiques }}</div>
+        <i class="fa fa-exclamation-triangle kpi-icon"></i>
+      </div>
+      <div class="kpi-card">
+        <h3>Masse Salariale</h3>
+        <div class="value">{{ masse_salariale|floatformat:0 }} FCFA</div>
+        <i class="fa fa-users kpi-icon"></i>
+      </div>
+    </div>
+
+    <div class="section-grid">
+      <div class="panel">
+        <h2><i class="fa fa-fire"></i> Top 5 des Plats les plus vendus</h2>
+        <ul class="top-plats-list">
+          {% for plat in top_plats %}
+          <li>
+            <span><strong>{{ forloop.counter }}.</strong> {{ plat.plat__nom }}</span>
+            <span><span class="badge" style="background:#f39c12; color:#111; padding:3px 10px; border-radius:15px; font-weight:bold;">{{ plat.total }} vendus</span></span>
+          </li>
+          {% empty %}
+          <li style="color: #aaa; font-style: italic;">Aucune donnée disponible pour ce mois.</li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div class="panel">
+        <h2><i class="fa fa-info-circle"></i> État du système</h2>
+        <p style="color: #aaa; line-height: 1.6;">
+          Tous les modules sont opérationnels.<br><br>
+          - <strong>Gestion des commandes :</strong> OK<br>
+          - <strong>Inventaire :</strong> {% if stocks_critiques > 0 %}<span class="badge-critical">{{ stocks_critiques }} alerte(s)</span>{% else %}OK{% endif %}<br>
+          - <strong>Ressources Humaines :</strong> OK<br>
+          - <strong>Paiements en ligne :</strong> OK
+        </p>
+        
+        <div style="margin-top: 30px;">
+          <a href="{% url 'creer_commande' %}" class="btn btn-primary" style="width: 100%; display: block; text-align: center; box-sizing: border-box;"><i class="fa fa-plus"></i> Nouvelle Commande (Serveur)</a>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+</body>
+</html>

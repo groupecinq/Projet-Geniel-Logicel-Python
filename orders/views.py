@@ -3,7 +3,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Commande, Client, LigneCommande, Invoice
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
+import json
+from django.views.decorators.csrf import csrf_exempt
 from products.models import Plat
 from orders.forms import CommandeForm, LigneCommandeFormSet
 from django.contrib.auth.forms import UserCreationForm
@@ -90,3 +92,70 @@ def generer_facture(request, pk):
                     'montant_ttc': commande.montant_total})
       # Génération PDF via WeasyPrint
     return render(request, 'orders/facture.html', {'invoice': invoice})
+
+
+@login_required
+@csrf_exempt
+def checkout_api(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            cart = data.get('cart', [])
+            type_commande = data.get('type_commande', 'sur_place')
+            mode_paiement = data.get('mode_paiement', 'espece')
+            
+            livraison_addresse = data.get('address', '') if type_commande == 'livraison' else ''
+            numero_table = data.get('table', '') if type_commande == 'sur_place' else None
+            
+            if not cart:
+                return JsonResponse({'error': 'Le panier est vide'}, status=400)
+                
+            # Create or get client
+            client_nom = request.user.username
+            client, created = Client.objects.get_or_create(
+                nom=client_nom,
+                defaults={
+                    'adresse': livraison_addresse,
+                    'numero_table': int(numero_table) if numero_table and str(numero_table).isdigit() else None
+                }
+            )
+            
+            commande = Commande.objects.create(
+                client=client,
+                creee_par=request.user,
+                statut='en_attente',
+                type_commande=type_commande,
+                mode_paiement=mode_paiement,
+                livraison_addresse=livraison_addresse,
+                notes=data.get('notes', '')
+            )
+            
+            for item in cart:
+                # Find plat by name since frontend uses hardcoded names
+                plat = Plat.objects.filter(nom__icontains=item['name']).first()
+                if not plat:
+                    # If not found, skip or create a dummy one for the sake of the demo
+                    continue
+                    
+                LigneCommande.objects.create(
+                    commande=commande,
+                    plat=plat,
+                    quantite=item['qty'],
+                    prix_unitaire=plat.prix
+                )
+                
+            commande.calculer_total()
+            
+            # Generate invoice right away
+            Invoice.objects.create(
+                commande=commande,
+                montant_ht=float(commande.montant_total) / 1.1925,
+                tva_pct=19.25,
+                montant_ttc=commande.montant_total
+            )
+            
+            return JsonResponse({'success': True, 'commande_id': commande.id})
+            
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+    return JsonResponse({'error': 'Invalid request'}, status=400)

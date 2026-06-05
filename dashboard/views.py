@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from django.core.cache import cache
 from django.db.models import Count, Sum
 from orders.models import Commande, LigneCommande
@@ -38,4 +39,39 @@ def accueil(request):
        cache.set(cache_key, data, timeout=300)  # cache 5 minutes
 
        return render(request, 'dashboard/accueil.html', {**data, 'mois': mois, 'annee': annee})
+
+@login_required
+def dashboard_api(request):
+    mois  = request.GET.get('mois', date.today().month)
+    annee = request.GET.get('annee', date.today().year)
+
+    agg = Commande.objects.filter(
+        date_creation__month=mois,
+        date_creation__year=annee
+    ).aggregate(nb=Count('id'), ca=Sum('montant_total'))
+
+    top_plats = LigneCommande.objects.filter(
+        commande__date_creation__month=mois
+    ).values('plat__nom').annotate(total=Sum('quantite')).order_by('-total')[:5]
+
+    stocks_critiques = Ingredient.objects.filter(statut='critique').count()
+
+    masse = Salaire.objects.filter(mois=mois, annee=annee).aggregate(s=Sum('salaire_net'))['s'] or 0
+
+    labels_plats = []
+    data_plats = []
+    for plat in top_plats:
+        labels_plats.append(plat['plat__nom'])
+        data_plats.append(int(plat['total'] or 0))
+
+    response_data = {
+        'ca': float(agg['ca'] or 0),
+        'nb_commandes': int(agg['nb'] or 0),
+        'stocks_critiques': stocks_critiques,
+        'masse_salariale': float(masse),
+        'top_plats_labels': labels_plats,
+        'top_plats_data': data_plats
+    }
+
+    return JsonResponse(response_data)
 

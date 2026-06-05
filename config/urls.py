@@ -25,4 +25,7 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('restaurant_web.urls')),
+    path('orders/', include('orders.urls')),
+    path('dashboard/', include('dashboard.urls')),
+    path('accounts/logout/', auth_views.LogoutView.as_view(next_page='/'), name='logout'),
 ]

@@ -349,38 +349,71 @@
   </div>
 
 
-  <!-- Modal Paiement MTN / Orange -->
-  <div class="cart-modal" id="paymentModal">
-    <div class="cart-panel" style="max-width: 400px; margin: auto;">
+  <!-- Modal Checkout Complet -->
+  <div class="cart-modal" id="checkoutModal">
+    <div class="cart-panel" style="max-width: 500px; margin: auto;">
       <div class="cart-header">
-        <h3><i class="fa fa-mobile-alt"></i> Paiement Mobile</h3>
-        <button id="closePayment"><i class="fa fa-times"></i></button>
+        <h3><i class="fa fa-credit-card"></i> Finaliser la commande</h3>
+        <button id="closeCheckout"><i class="fa fa-times"></i></button>
       </div>
-      <div style="padding: 20px;">
-        <p style="margin-bottom: 15px; color: #ccc;">Veuillez entrer vos coordonnées MTN Mobile Money ou Orange Money
-          pour valider le paiement de <strong id="payAmount"></strong>.</p>
+      <div style="padding: 20px; max-height: 70vh; overflow-y: auto;">
+        <p style="margin-bottom: 15px; color: #ccc;">Montant à payer : <strong id="payAmount" style="color: #f39c12; font-size: 1.2em;"></strong></p>
+        
+        <!-- Type de commande -->
         <div class="form-group" style="margin-bottom: 15px;">
-          <label>Réseau</label>
-          <select id="payNetwork"
-            style="width: 100%; padding: 10px; border-radius: 5px; background: #333; color: white; border: 1px solid #555;">
-            <option value="mtn">MTN Mobile Money</option>
+          <label>Type de Commande</label>
+          <select id="orderType" onchange="toggleOrderFields()" style="width: 100%; padding: 10px; border-radius: 5px; background: #333; color: white; border: 1px solid #555;">
+            <option value="sur_place">Sur place</option>
+            <option value="emporter">À emporter</option>
+            <option value="livraison">Livraison</option>
+          </select>
+        </div>
+
+        <div class="form-group" id="tableField" style="margin-bottom: 15px;">
+          <label>Numéro de Table</label>
+          <input type="number" id="orderTable" placeholder="Ex: 5" style="width: 100%; padding: 10px; border-radius: 5px; background: #333; color: white; border: 1px solid #555;" />
+        </div>
+
+        <div class="form-group" id="addressField" style="margin-bottom: 15px; display: none;">
+          <label>Adresse de Livraison</label>
+          <textarea id="orderAddress" placeholder="Votre adresse complète" style="width: 100%; padding: 10px; border-radius: 5px; background: #333; color: white; border: 1px solid #555;" rows="2"></textarea>
+        </div>
+
+        <hr style="border-color: #555; margin: 20px 0;">
+
+        <!-- Mode de paiement -->
+        <div class="form-group" style="margin-bottom: 15px;">
+          <label>Mode de Paiement</label>
+          <select id="paymentMethod" onchange="togglePaymentFields()" style="width: 100%; padding: 10px; border-radius: 5px; background: #333; color: white; border: 1px solid #555;">
+            <option value="espece">Espèce</option>
+            <option value="carte">Carte Bancaire</option>
+            <option value="momo">MTN Mobile Money</option>
             <option value="orange">Orange Money</option>
           </select>
         </div>
-        <div class="form-group" style="margin-bottom: 15px;">
-          <label>Numéro de téléphone</label>
-          <input type="tel" id="payPhone" placeholder="Ex: 6 70 00 00 00"
-            style="width: 100%; padding: 10px; border-radius: 5px; background: #333; color: white; border: 1px solid #555;"
-            required />
+
+        <!-- Mobile Money Fields -->
+        <div id="mobileMoneyFields" style="display: none;">
+          <div class="form-group" style="margin-bottom: 15px;">
+            <label>Numéro de téléphone</label>
+            <input type="tel" id="payPhone" placeholder="Ex: 6 70 00 00 00" style="width: 100%; padding: 10px; border-radius: 5px; background: #333; color: white; border: 1px solid #555;" />
+          </div>
+          <div class="form-group" style="margin-bottom: 20px;">
+            <label>Code Secret (PIN)</label>
+            <input type="password" id="payPin" placeholder="••••" style="width: 100%; padding: 10px; border-radius: 5px; background: #333; color: white; border: 1px solid #555;" />
+          </div>
         </div>
-        <div class="form-group" style="margin-bottom: 20px;">
-          <label>Code Secret (PIN)</label>
-          <input type="password" id="payPin" placeholder="••••"
-            style="width: 100%; padding: 10px; border-radius: 5px; background: #333; color: white; border: 1px solid #555;"
-            required />
+
+        <!-- Card Fields -->
+        <div id="cardFields" style="display: none;">
+          <div class="form-group" style="margin-bottom: 15px;">
+            <label>Numéro de Carte</label>
+            <input type="text" id="payCard" placeholder="0000 0000 0000 0000" style="width: 100%; padding: 10px; border-radius: 5px; background: #333; color: white; border: 1px solid #555;" />
+          </div>
         </div>
-        <button onclick="confirmPayment()" class="btn btn-primary" style="width: 100%; justify-content: center;">
-          Valider le paiement
+
+        <button onclick="confirmCheckout()" class="btn btn-primary" style="width: 100%; justify-content: center; margin-top: 10px;">
+          Valider la commande
         </button>
       </div>
     </div>
@@ -478,33 +511,81 @@
         showToast('❌ Votre panier est vide.', 'error');
         return;
       }
-      // Open Payment Modal
+      // Open Checkout Modal
       document.getElementById('cartModal').classList.remove('open');
-      document.getElementById('paymentModal').classList.add('open');
+      document.getElementById('checkoutModal').classList.add('open');
       const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
       document.getElementById('payAmount').textContent = total.toLocaleString() + ' FCFA';
     }
 
-    document.getElementById('closePayment').addEventListener('click', () => {
-      document.getElementById('paymentModal').classList.remove('open');
+    document.getElementById('closeCheckout').addEventListener('click', () => {
+      document.getElementById('checkoutModal').classList.remove('open');
     });
 
-    function confirmPayment() {
+    function toggleOrderFields() {
+      const type = document.getElementById('orderType').value;
+      document.getElementById('tableField').style.display = type === 'sur_place' ? 'block' : 'none';
+      document.getElementById('addressField').style.display = type === 'livraison' ? 'block' : 'none';
+    }
+
+    function togglePaymentFields() {
+      const method = document.getElementById('paymentMethod').value;
+      document.getElementById('mobileMoneyFields').style.display = (method === 'momo' || method === 'orange') ? 'block' : 'none';
+      document.getElementById('cardFields').style.display = method === 'carte' ? 'block' : 'none';
+    }
+
+    async function confirmCheckout() {
+      const orderType = document.getElementById('orderType').value;
+      const paymentMethod = document.getElementById('paymentMethod').value;
+      const table = document.getElementById('orderTable').value;
+      const address = document.getElementById('orderAddress').value;
       const phone = document.getElementById('payPhone').value;
-      const pin = document.getElementById('payPin').value;
-      if (!phone || !pin) {
-        showToast('❌ Veuillez remplir tous les champs.', 'error');
+
+      // Basic validation
+      if (orderType === 'livraison' && !address) {
+        showToast('❌ Veuillez saisir une adresse de livraison.');
+        return;
+      }
+      if ((paymentMethod === 'momo' || paymentMethod === 'orange') && !phone) {
+        showToast('❌ Veuillez saisir votre numéro de téléphone.');
         return;
       }
 
-      showToast('✅ Paiement mobile réussi ! Commande validée.', 'success');
-      cart = [];
-      updateCart();
-      document.getElementById('payPhone').value = '';
-      document.getElementById('payPin').value = '';
-      setTimeout(() => {
-        document.getElementById('paymentModal').classList.remove('open');
-      }, 1500);
+      const payload = {
+        cart: cart,
+        type_commande: orderType,
+        mode_paiement: paymentMethod,
+        table: table,
+        address: address,
+        phone: phone
+      };
+
+      try {
+        const response = await fetch('/orders/api/checkout/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload)
+        });
+        
+        const data = await response.json();
+        if (response.ok && data.success) {
+          showToast('✅ Commande validée avec succès !');
+          cart = [];
+          updateCart();
+          document.getElementById('checkoutModal').classList.remove('open');
+          
+          // Redirect to invoice
+          setTimeout(() => {
+            window.location.href = `/orders/${data.commande_id}/facture/`;
+          }, 1500);
+        } else {
+          showToast('❌ Erreur: ' + (data.error || 'Erreur inconnue'));
+        }
+      } catch (err) {
+        showToast('❌ Erreur de connexion au serveur.');
+      }
     }
 
   </script>

@@ -1,0 +1,185 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Facture #{{ invoice.id }} - SAVORA Restaurant</title>
+  <style>
+    body {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      color: #333;
+      background: #f9f9f9;
+      margin: 0;
+      padding: 20px;
+    }
+    .invoice-box {
+      max-width: 800px;
+      margin: auto;
+      padding: 30px;
+      border: 1px solid #eee;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+      background: #fff;
+    }
+    .invoice-header {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 2px solid #333;
+      padding-bottom: 20px;
+      margin-bottom: 20px;
+    }
+    .invoice-header h1 {
+      margin: 0;
+      color: #f39c12; /* Brand color */
+    }
+    .invoice-details {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 40px;
+    }
+    .invoice-details div {
+      line-height: 1.6;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    table th, table td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    table th {
+      background: #f3f3f3;
+      color: #333;
+    }
+    .totals {
+      width: 100%;
+      max-width: 300px;
+      margin-left: auto;
+    }
+    .totals td {
+      border: none;
+      padding: 8px 12px;
+    }
+    .totals .grand-total {
+      font-weight: bold;
+      font-size: 1.2em;
+      border-top: 2px solid #333;
+    }
+    .text-right {
+      text-align: right !important;
+    }
+    .print-btn {
+      display: block;
+      width: 200px;
+      margin: 30px auto 0;
+      padding: 12px;
+      background: #f39c12;
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+    }
+    .print-btn:hover {
+      background: #e67e22;
+    }
+    @media print {
+      body {
+        background: white;
+        padding: 0;
+      }
+      .invoice-box {
+        box-shadow: none;
+        border: none;
+        padding: 0;
+      }
+      .print-btn {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="invoice-box">
+  <div class="invoice-header">
+    <div>
+      <h1>SAVORA</h1>
+      <p style="margin: 5px 0 0;">Restaurant & Grillades</p>
+    </div>
+    <div class="text-right">
+      <h2>FACTURE N° {{ invoice.id }}</h2>
+      <p>Date : {{ invoice.date_emission|date:"d/m/Y H:i" }}</p>
+    </div>
+  </div>
+
+  <div class="invoice-details">
+    <div>
+      <strong>De :</strong><br>
+      SAVORA Restaurant<br>
+      123 Rue de la Gastronomie<br>
+      Douala, Cameroun<br>
+      Tél: +237 600 000 000
+    </div>
+    <div class="text-right">
+      <strong>À (Client) :</strong><br>
+      {{ invoice.commande.client.nom }}<br>
+      {% if invoice.commande.client.adresse %}
+      Adresse : {{ invoice.commande.client.adresse }}<br>
+      {% endif %}
+      {% if invoice.commande.client.numero_table %}
+      Table : {{ invoice.commande.client.numero_table }}<br>
+      {% endif %}
+      Type : {{ invoice.commande.get_type_commande_display }}<br>
+      Paiement : {{ invoice.commande.get_mode_paiement_display }}
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Description</th>
+        <th class="text-right">Qté</th>
+        <th class="text-right">Prix Unitaire</th>
+        <th class="text-right">Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for ligne in invoice.commande.lignes.all %}
+      <tr>
+        <td>{{ ligne.plat.nom }}</td>
+        <td class="text-right">{{ ligne.quantite }}</td>
+        <td class="text-right">{{ ligne.prix_unitaire }} FCFA</td>
+        <td class="text-right">{{ ligne.sous_total }} FCFA</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <table class="totals">
+    <tr>
+      <td>Total HT :</td>
+      <td class="text-right">{{ invoice.montant_ht|floatformat:2 }} FCFA</td>
+    </tr>
+    <tr>
+      <td>TVA ({{ invoice.tva_pct }}%) :</td>
+      <td class="text-right">Inclus</td>
+    </tr>
+    <tr class="grand-total">
+      <td>Montant TTC :</td>
+      <td class="text-right">{{ invoice.montant_ttc }} FCFA</td>
+    </tr>
+  </table>
+
+  <button class="print-btn" onclick="window.print()">Imprimer la facture</button>
+  <div style="text-align: center; margin-top: 15px;">
+    <a href="{% url 'menu' %}" style="color: #666; text-decoration: none;">Retour au menu</a>
+  </div>
+</div>
+
+</body>
+</html>

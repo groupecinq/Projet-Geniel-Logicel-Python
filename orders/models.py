@@ -15,7 +15,8 @@ class Client(models.Model):
 class Commande(models.Model):
     STATUTS = [('en_attente','En attente'), ('en_preparation','En préparation'),
                ('pret','Prêt'), ('livre','Livré'), ('annule','Annulé')]
-    TYPES   = [('sur_place','Sur place'), ('livraison','Livraison')]
+    TYPES   = [('sur_place','Sur place'), ('livraison','Livraison'), ('emporter', 'À emporter')]
+    MODE_PAIEMENT = [('espece', 'Espèce'), ('carte', 'Carte Bancaire'), ('momo', 'MTN Mobile Money'), ('orange', 'Orange Money')]
 
     client         = models.ForeignKey(Client, on_delete=models.CASCADE,
                                        related_name='commandes')
@@ -24,6 +25,8 @@ class Commande(models.Model):
                                       default='en_attente')
     type_commande  = models.CharField(max_length=20, choices=TYPES,
                                       default='sur_place')
+    mode_paiement  = models.CharField(max_length=20, choices=MODE_PAIEMENT,
+                                      default='espece')
     date_creation  = models.DateTimeField(auto_now_add=True)
     montant_total  = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     notes          = models.TextField(blank=True)
